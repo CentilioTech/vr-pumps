@@ -8,6 +8,7 @@ import FavouriteButton from '@/components/favourite-button.js';
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import Link from 'next/link';
 import { useCart, useWishlist, addToCart, removeFromCart, inCart, toggleWishlist } from '@/lib/store';
+import { num } from '@/lib/catalog.js';
 
 const MainSection = () => {
   // State for products with favorite status
@@ -293,8 +294,8 @@ const MainSection = () => {
           <div className="text-sm text-gray-600 mb-1">{product.brand}</div>
           <Link href={`/pumps/${product.id}`} className="text-md font-bold text-black mb-1 hover:text-blue-600 inline-block">{product.name}</Link>
           <div className="text-sm text-[#000000] mb-2 space-y-1">
-            <div>HP: {product.horsePower} | Speed: {product.motorSpeed} RPM</div>
-            <div>Max Head: {product.maximumHead}m</div>
+            <div>HP: {num(product.horsePower) ?? product.horsePower} | Max Discharge: {num(product.maximumDischarge) ?? product.maximumDischarge} LPM</div>
+            <div>Max Head: {num(product.maximumHead) ?? product.maximumHead} m</div>
           </div>
           <div className="text-lg font-semibold text-gray-900 mb-2">
             ₹{product.price.toLocaleString()}

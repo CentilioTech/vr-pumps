@@ -5,6 +5,7 @@ import { ArrowLeft, Heart } from "lucide-react";
 import Header from "@/components/header.js";
 import Footer from "@/components/footer.js";
 import { useCart, useWishlist, addToCart, removeFromCart, toggleWishlist } from "@/lib/store";
+import { num } from "@/lib/catalog.js";
 
 export default function ProductDetail({ product }) {
   const cart = useCart();
@@ -25,10 +26,11 @@ export default function ProductDetail({ product }) {
 
   const inCartNow = cart.some((c) => c.id === product.id);
   const inWishNow = wish.includes(product.id);
+  const hp = num(product.horsePower), mh = num(product.maximumHead), md = num(product.maximumDischarge);
   const specs = [
-    ["Horse Power", product.horsePower != null ? `${product.horsePower} HP` : "—"],
-    ["Maximum Head", product.maximumHead != null ? `${product.maximumHead} m` : "—"],
-    ["Maximum Discharge", product.maximumDischarge != null ? `${product.maximumDischarge} LPM` : "—"],
+    ["Horse Power", hp != null ? `${hp} HP` : "—"],
+    ["Maximum Head", mh != null ? `${mh} m` : "—"],
+    ["Maximum Discharge", md != null ? `${md} LPM` : "—"],
     ["Stage", product.stage != null ? String(product.stage) : "—"],
     ["Head Range", Array.isArray(product.headRange) ? `${product.headRange[0]}–${product.headRange[1]} m` : "—"],
     ["Series", product.category || "—"],

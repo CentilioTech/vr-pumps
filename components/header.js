@@ -24,7 +24,7 @@ export default function Header({activeTab}) {
     { name: 'Home', url: '/', icon: Home },
     { name: 'About', url: '/about', icon: User },
     { name: 'Products', url: '/pumps', icon: Briefcase },
-    { name: 'Categories', url: '/pumps', icon: FileText },
+    { name: 'Categories', url: '/categories', icon: FileText },
     { name: 'Pumps', url: '/pumps', icon: Droplets },
     { name: 'Contact', url: '/contact', icon: Phone },
   ];

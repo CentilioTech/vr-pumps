@@ -197,11 +197,11 @@ export const allProducts = [
     quantity: 1,
     isAddedtoCart: false,
     price: 23667,
-    horsePower: "3 hp",
-    maximumHead: "30 mtr",
-    maximumDischarge: "690 lpm",
+    horsePower: 3,
+    maximumHead: 30,
+    maximumDischarge: 690,
     stage: 2,
-    headRange: "10 to 20 mtr",
+    headRange: [10, 20],
     applications: ["Domestics", "Gardenings", "Agriculture", "Fountain"]
   },
   {
