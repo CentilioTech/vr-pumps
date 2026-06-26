@@ -12,10 +12,13 @@ import logo from "@/images/logo.svg";
 import search from "@/images/search.svg";
 import favourite from "@/images/favourite.svg";
 import cart from "@/images/cart.svg";
+import { useCartCount, useWishCount } from "@/lib/store";
 
 export default function Header({activeTab}) {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const cartCount = useCartCount();
+  const wishCount = useWishCount();
 
   const navItems = [
     { name: 'Home', url: '/', icon: Home },
@@ -50,7 +53,7 @@ export default function Header({activeTab}) {
             <div className="flex items-center space-x-4">
               <Link href="/wishlist">
                 <div className={`${activeTab == 'Wishlist' ? '-top-2 left-1/2 h-1 bg-[#377DFF] rounded-t-full' : ''}`}></div>
-                <button className={`p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block ${activeTab == 'Wishlist' ? 'bg-[#e4ebff]' : ''}`}>
+                <span className="relative inline-block"><button className={`p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block ${activeTab == 'Wishlist' ? 'bg-[#e4ebff]' : ''}`}>
                   <Image
                     src={favourite}
                     alt="WishList"
@@ -58,11 +61,11 @@ export default function Header({activeTab}) {
                     height={20}
                     className="w-5 h-5"
                   />
-                </button>
+                </button>{wishCount > 0 && <span classwishCountame="absolute -top-1 -right-1 bg-[#377DFF] text-white text-[10px] leading-none rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center">{wishCount}</span>}</span>
               </Link>
               <Link href="/cart">
                 <div className={`${activeTab == 'Cart' ? '-top-2 left-1/2 h-1 bg-[#377DFF] rounded-t-full' : ''}`}></div>
-                <button className={`p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block ${activeTab == 'Cart' ? 'bg-[#e4ebff]' : ''}`}>
+                <span className="relative inline-block"><button className={`p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block ${activeTab == 'Cart' ? 'bg-[#e4ebff]' : ''}`}>
                   <Image
                     src={cart}
                     alt="Cart"
@@ -70,7 +73,7 @@ export default function Header({activeTab}) {
                     height={20}
                     className="w-5 h-5"
                   />
-                </button>
+                </button>{cartCount > 0 && <span classcartCountame="absolute -top-1 -right-1 bg-[#377DFF] text-white text-[10px] leading-none rounded-full min-w-[16px] h-4 px-1 flex items-center justify-center">{cartCount}</span>}</span>
               </Link>
               {/* Search Icon */}
               <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block">

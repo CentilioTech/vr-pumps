@@ -6,10 +6,14 @@ import { ChevronDown, Grid, List, Filter, X } from 'lucide-react';
 import { allProducts } from '@/components/pumps-list.js';
 import FavouriteButton from '@/components/favourite-button.js';
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import Link from 'next/link';
+import { useCart, useWishlist, addToCart, removeFromCart, inCart, toggleWishlist } from '@/lib/store';
 
 const MainSection = () => {
   // State for products with favorite status
   const [products, setProducts] = useState(allProducts);
+  const cartIds = useCart();
+  const wishIds = useWishlist();
   const [isMobile, setIsMobile] = useState(false);
 
   // State for filters
@@ -61,24 +65,10 @@ const MainSection = () => {
   const productsPerPage = 9;
 
   // Function to toggle favorite status
-  const toggleFavorite = (productId) => {
-    setProducts(prevProducts => 
-      prevProducts.map(product => 
-        product.id === productId 
-          ? { ...product, isFavourite: !product.isFavourite }
-          : product
-      )
-    );
-  };
+  const toggleFavorite = (productId) => toggleWishlist(productId);
 
   const toggleCart = (productId) => {
-    setProducts(prevProducts => 
-      prevProducts.map(product => 
-        product.id === productId 
-          ? { ...product, isAddedtoCart: !product.isAddedtoCart }
-          : product
-      )
-    );
+    inCart(productId) ? removeFromCart(productId) : addToCart(productId, 1);
   };
 
   // Filter products based on selected filters (now using local products state)
@@ -282,13 +272,13 @@ const MainSection = () => {
         <div className="relative">
           <div className="absolute top-4 right-4 z-10">
             <FavouriteButton 
-              isFavorite={product.isFavourite}
+              isFavorite={wishIds.includes(product.id)}
               onToggle={() => toggleFavorite(product.id)}
             />
           </div>
 
           {/* Product Image */}
-          <div className="aspect-square bg-gray-50 p-6 flex items-center justify-center">
+          <Link href={`/pumps/${product.id}`} className="aspect-square bg-gray-50 p-6 flex items-center justify-center">
             <Image
               src={product.imageUrl}
               priority
@@ -297,13 +287,11 @@ const MainSection = () => {
               height={200}
               className="object-contain"
             />
-          </div>
+          </Link>
         </div>
         <div className="p-4">
           <div className="text-sm text-gray-600 mb-1">{product.brand}</div>
-          <h3 className="text-md font-bold text-black mb-1">
-            {product.name}
-          </h3>
+          <Link href={`/pumps/${product.id}`} className="text-md font-bold text-black mb-1 hover:text-blue-600 inline-block">{product.name}</Link>
           <div className="text-sm text-[#000000] mb-2 space-y-1">
             <div>HP: {product.horsePower} | Speed: {product.motorSpeed} RPM</div>
             <div>Max Head: {product.maximumHead}m</div>
@@ -320,7 +308,7 @@ const MainSection = () => {
               <span className="text-sm text-blue-600">{product.reviews}</span>
             )}
           </div>
-          {product.isAddedtoCart ? (
+          {cartIds.some((c) => c.id === product.id) ? (
         <button 
           onClick={() => toggleCart(product.id)}
           className="w-fit bg-red-500 hover:bg-red-600 font-medium text-white py-2 px-4 rounded transition-colors cursor-pointer"
