@@ -20,8 +20,8 @@ export default function Header({activeTab}) {
   const navItems = [
     { name: 'Home', url: '/', icon: Home },
     { name: 'About', url: '/about', icon: User },
-    { name: 'Products', url: '#', icon: Briefcase },
-    { name: 'Categories', url: '#', icon: FileText },
+    { name: 'Products', url: '/pumps', icon: Briefcase },
+    { name: 'Categories', url: '/pumps', icon: FileText },
     { name: 'Pumps', url: '/pumps', icon: Droplets },
     { name: 'Contact', url: '/contact', icon: Phone },
   ];
@@ -47,7 +47,7 @@ export default function Header({activeTab}) {
 
             {/* Right Side Actions */}
             <div className="flex items-center space-x-4">
-              <a href='/wishlist'>
+              <Link href="/wishlist">
                 <div className={`${activeTab == 'Wishlist' ? '-top-2 left-1/2 h-1 bg-[#377DFF] rounded-t-full' : ''}`}></div>
                 <button className={`p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block ${activeTab == 'Wishlist' ? 'bg-[#e4ebff]' : ''}`}>
                   <Image
@@ -58,9 +58,8 @@ export default function Header({activeTab}) {
                     className="w-5 h-5"
                   />
                 </button>
-                {console.log(activeTab)}
-              </a>
-              <a href="/cart">
+              </Link>
+              <Link href="/cart">
                 <div className={`${activeTab == 'Cart' ? '-top-2 left-1/2 h-1 bg-[#377DFF] rounded-t-full' : ''}`}></div>
                 <button className={`p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block ${activeTab == 'Cart' ? 'bg-[#e4ebff]' : ''}`}>
                   <Image
@@ -71,7 +70,7 @@ export default function Header({activeTab}) {
                     className="w-5 h-5"
                   />
                 </button>
-              </a>
+              </Link>
               {/* Search Icon */}
               <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer hidden sm:block">
                 <Image
