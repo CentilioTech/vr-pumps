@@ -39,6 +39,7 @@ export default function Fold1() {
               <div className="relative w-full max-w-md lg:max-w-lg">
                 <Image
                   src={fold1image1}
+                  priority
                   alt="Flowmaxx Pump"
                   width={500}
                   height={400}

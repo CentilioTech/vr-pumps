@@ -291,6 +291,7 @@ const MainSection = () => {
           <div className="aspect-square bg-gray-50 p-6 flex items-center justify-center">
             <Image
               src={product.imageUrl}
+              priority
               alt={product.name}
               width={200}
               height={200}

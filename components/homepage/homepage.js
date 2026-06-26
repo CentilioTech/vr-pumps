@@ -8,7 +8,7 @@ import Footer from "@/components/footer.js";
 
 export default function Homepage() {
 	return(
-		<div className="font-['Montserrat']">
+		<div className="font-sans">
 			<Header activeTab={'Home'} />
 			<Fold1 />
 			<Fold2 />

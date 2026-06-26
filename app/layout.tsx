@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Geist_Mono, Sora } from "next/font/google";
+import { Montserrat, Geist_Mono, Sora } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
+const montserrat = Montserrat({
   variable: "--font-geist-sans",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${geistMono.variable} ${sora.variable} font-sans antialiased overscroll-y-none`}
+        className={`${montserrat.variable} ${geistMono.variable} ${sora.variable} font-sans antialiased overscroll-y-none`}
       >
         {children}
       </body>

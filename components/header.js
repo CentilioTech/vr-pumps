@@ -36,6 +36,7 @@ export default function Header({activeTab}) {
               <Link href="/" className="flex items-center">
                 <Image
                   src={logo}
+                  priority
                   alt="VR PUMPS"
                   width={150}
                 />

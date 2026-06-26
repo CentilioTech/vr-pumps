@@ -4,7 +4,7 @@ import Footer from "@/components/footer.js";
 
 export default function Pumps() {
 	return(
-		<div className="font-['Montserrat']">
+		<div className="font-sans">
 			<Header activeTab={'Cart'} />
 	    	<ShoppingCart />
 	    	<Footer />

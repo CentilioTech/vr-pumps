@@ -197,6 +197,7 @@ export default function Fold5() {
                 <div className="aspect-square bg-gray-50 p-6 flex items-center justify-center">
                   <Image
                     src={product.image}
+                    priority
                     alt={product.name}
                     width={200}
                     height={200}
