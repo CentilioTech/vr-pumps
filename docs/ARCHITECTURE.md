@@ -110,3 +110,24 @@ Same family as the StarPromoters CRM. Key conventions:
 | Metrics API (Python) | 8001 | `centilio-metrics` | internal |
 | PostgreSQL 16 | 5432 | `postgresql@16-main` | `vrpumps`, trademinds, … |
 | MySQL | 3306 | `mysql` | slack_db, whatsapp |
+
+---
+
+## CDN asset delivery (front-end, current)
+
+The static export is split across two origins, matching Centilio account/drive/sign:
+
+- **HTML + `public/`** → served by nginx on **tools1** at `/vrpumps/` (~0.5 MB).
+- **`_next/` (client JS, CSS, fonts, hashed/optimized images)** → **DigitalOcean
+  Spaces `us-cdn1`, region sfo3**, served at `https://us-cdn1.centilio.com/vrpumps/<version>/_next/...`
+  with `cache-control: immutable`, behind the CDN edge.
+
+`next.config.ts` sets `assetPrefix` from `VRPUMPS_CDN_BASE` at build time, so the
+emitted HTML references the versioned CDN path. Versions are immutable folders
+(`vrpumps/v1`, `vrpumps/v2`, …) → instant rollback. Cross-origin is covered by the
+bucket's existing CORS allow-list (`https://*.centilio.com`).
+
+Performance: product/marketing images are optimized in-repo (128 MB → 19 MB) and
+served (hashed) from the CDN. The tools1 box no longer serves any large assets.
+
+See `deploy/deploy-cdn.sh` and `deploy/DEPLOY.md` for the runbook.

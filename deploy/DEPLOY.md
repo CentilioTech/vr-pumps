@@ -111,3 +111,41 @@ for p in / /slack/ /whatsapp/; do echo "$p -> $(curl -s -o /dev/null -w '%{http_
 | Docroot | `/var/www/vrpumps` |
 | URL base | `/vrpumps` (basePath) |
 | Routes | `/`, about, cart, contact, order-completed, pumps, wishlist (+404) |
+
+---
+
+## CDN deployment (CURRENT method — supersedes the local-asset steps above)
+
+As of 2026-06-26, vr-pumps follows the Centilio account/drive/sign model: the
+**HTML is served from tools1** at `/vrpumps/`, but **all `_next` assets (client JS,
+CSS, fonts, hashed images) are served from DigitalOcean Spaces `us-cdn1` (sfo3)**,
+public domain `https://us-cdn1.centilio.com`. The server docroot holds only HTML +
+`public/` (~0.5 MB instead of 131 MB).
+
+### Versioning
+Every deploy publishes a **new immutable version folder**
+`https://us-cdn1.centilio.com/vrpumps/<VER>/_next/...` (v1, v2, v3 …). Old folders
+stay forever, so rollback is instant. `next.config.ts` reads the CDN base from
+`VRPUMPS_CDN_BASE` (env) so the committed config has no hardcoded version.
+
+### Deploy
+```bash
+# on tools1, as root
+export AWS_ACCESS_KEY_ID=...        # vault "DO Space API key - Deploy-All-Full" (username)
+export AWS_SECRET_ACCESS_KEY=...    # same item (password)   region sfo3, bucket us-cdn1
+VER=v2 bash deploy/deploy-cdn.sh    # ALWAYS bump VER (previous deploy was v1)
+```
+`deploy-cdn.sh` = pull main → temp swap → `VRPUMPS_CDN_BASE=https://us-cdn1.centilio.com/vrpumps/<VER> next build`
+→ guard (HTML must reference the CDN) → `aws s3 cp out/_next` to `s3://us-cdn1/vrpumps/<VER>/_next`
+(js/css/woff2 typed, `--acl public-read --cache-control immutable`, endpoint `https://sfo3.digitaloceanspaces.com`)
+→ rsync HTML to `/var/www/vrpumps` and **remove local `_next`** → smoke test.
+
+### Rollback
+Re-run with the previous `VER` (its CDN folder is intact) to regenerate matching
+HTML, or restore the docroot tarball `/root/vrpumps-docroot.bak.<ts>.tgz`.
+
+### Images / performance
+Source images live in `images/` and are **optimized in the repo** (resize: heroes
+≤1920px, products ≤1400px; `pngquant`/`jpegoptim`). The catalog went from **128 MB
+→ 19 MB**. Keep new uploads optimized (or re-run the resize+pngquant/jpegoptim pass)
+before committing. CORS on `us-cdn1` already allows `https://*.centilio.com`.
