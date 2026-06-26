@@ -20,7 +20,7 @@ export default function CategoriesView() {
               <div className="p-4">
                 <div className="font-semibold text-gray-900 group-hover:text-blue-600">{c.name}</div>
                 <div className="text-xs text-gray-500 mt-1">{c.count} product{c.count > 1 ? "s" : ""}</div>
-                {isFinite(c.minPrice) && <div className="text-sm font-medium text-gray-900 mt-1">From &#8377;{c.minPrice.toLocaleString()}</div>}
+                {isFinite(c.minPrice) && c.minPrice > 0 && <div className="text-sm font-medium text-gray-900 mt-1">From &#8377;{c.minPrice.toLocaleString()}</div>}
               </div>
             </Link>
           ))}
